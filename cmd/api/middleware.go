@@ -218,8 +218,6 @@ func (app *application) metrics(next http.Handler) http.Handler {
 
 		metrics := httpsnoop.CaptureMetrics(next, w, r)
 
-		next.ServeHTTP(w, r)
-
 		totalResponsesSent.Add(1)
 
 		duration := time.Since(start).Microseconds()
