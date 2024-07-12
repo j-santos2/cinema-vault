@@ -223,6 +223,17 @@ func (app *application) metrics(next http.Handler) http.Handler {
 		duration := time.Since(start).Microseconds()
 		totalProcessingTimeMicroseconds.Add(duration)
 
-		totalResponsesSentByStatus.Add(strconv.Itoa(metrics.Code), 1)
+		httpCode := strconv.Itoa(metrics.Code)
+		totalResponsesSentByStatus.Add(httpCode, 1)
+
+		app.logger.PrintInfo(
+			"Request",
+			map[string]string{
+				"path":                 r.URL.Path,
+				"httpCode":             httpCode,
+				"client":               realip.FromRequest(r),
+				"durationMicroseconds": strconv.FormatInt(duration, 10),
+			},
+		)
 	})
 }
