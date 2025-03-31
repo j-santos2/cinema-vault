@@ -5,21 +5,18 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/julienschmidt/httprouter"
-
 	"github.com/j-santos2/cinema-vault/internal/assert"
 	"github.com/j-santos2/cinema-vault/internal/validator"
 )
 
 func TestReadIDParam(t *testing.T) {
-	router := httprouter.New()
+	router := http.NewServeMux()
 	a := application{}
 
 	var id int64
 	var err error
-	router.HandlerFunc(
-		http.MethodGet,
-		"/resource/:id",
+	router.HandleFunc(
+		"GET /resource/{id}",
 		func(w http.ResponseWriter, r *http.Request) {
 			id, err = a.readIDParam(r)
 		},
