@@ -29,7 +29,7 @@ func (app *application) routes() http.Handler {
 		app.requirePermission("movies:write", app.updateMovieHandler),
 	)
 	router.HandleFunc(
-		"DELETE/v1/movies/:id",
+		"DELETE /v1/movies/{id}",
 		app.requirePermission("movies:write", app.deleteMovieHandler),
 	)
 
