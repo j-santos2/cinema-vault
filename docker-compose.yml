@@ -12,6 +12,22 @@ services:
       - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      CINEMAVAULT_DB_DSN: ${CINEMAVAULT_DB_DSN:-postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/cinemavault?sslmode=disable}
+    ports:
+      - "9999:4000"
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   postgres:

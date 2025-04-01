@@ -58,7 +58,13 @@ test:
 # BUILD 
 # ======================================================= #
 
-current_time = ${shell date --iso-8601=seconds}
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	current_time = ${shell date --iso-8601=seconds}
+endif
+ifeq ($(UNAME_S),Darwin)
+	current_time = ${shell date -u +"%Y-%m-%dT%H:%M:%SZ"}
+endif
 git_description = ${shell git describe --always --dirty --tags --long}
 linker_flags= '-s -X main.buildTime=${current_time} -X main.version=${git_description}'
 
