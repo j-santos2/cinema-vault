@@ -13,7 +13,7 @@ import (
 	"github.com/j-santos2/cinema-vault/internal/validator"
 )
 
-type envelope map[string]interface{}
+type envelope map[string]any
 
 func (app *application) readIDParam(r *http.Request) (int64, error) {
 	param := r.PathValue("id")
@@ -49,7 +49,7 @@ func (app *application) writeJSON(
 	return nil
 }
 
-func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst interface{}) error {
+func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst any) error {
 	maxBytes := 1_048_576
 	r.Body = http.MaxBytesReader(w, r.Body, int64(maxBytes))
 

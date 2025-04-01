@@ -78,7 +78,7 @@ func (m MovieModel) Insert(movie *Movie) error {
     VALUES ($1, $2, $3, $4)
     RETURNING id, created_at, version
   `
-	args := []interface{}{movie.Title, movie.Year, movie.Runtime, pq.Array(movie.Genres)}
+	args := []any{movie.Title, movie.Year, movie.Runtime, pq.Array(movie.Genres)}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -94,7 +94,7 @@ func (m MovieModel) Update(movie *Movie) error {
     WHERE id = $5 AND version = $6
     RETURNING version
   `
-	args := []interface{}{
+	args := []any{
 		movie.Title,
 		movie.Year,
 		movie.Runtime,
@@ -164,7 +164,7 @@ func (m MovieModel) GetAll(
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	args := []interface{}{title, pq.Array(genres), filters.limit(), filters.offset()}
+	args := []any{title, pq.Array(genres), filters.limit(), filters.offset()}
 	rows, err := m.DB.QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, Metadata{}, err
