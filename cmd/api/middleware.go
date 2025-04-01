@@ -163,7 +163,7 @@ func (app *application) requirePermission(code string, next http.HandlerFunc) ht
 			return
 		}
 
-		if !permissions.Include(code) {
+		if !permissions.Includes(code) {
 			app.notPermittedResponse(w, r)
 			return
 		}

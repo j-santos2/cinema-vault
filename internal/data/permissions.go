@@ -5,19 +5,15 @@ import (
 	"database/sql"
 	"time"
 
+	"slices"
+
 	"github.com/lib/pq"
 )
 
 type Permissions []string
 
-func (p Permissions) Include(code string) bool {
-	for i := range p {
-		if code == p[i] {
-			return true
-		}
-	}
-
-	return false
+func (p Permissions) Includes(code string) bool {
+	return slices.Contains(p, code)
 }
 
 type PermissionModel struct {
