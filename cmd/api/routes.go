@@ -43,5 +43,7 @@ func (app *application) routes() http.Handler {
 
 	router.Handle("GET /v1/metrics", expvar.Handler())
 
+	router.HandleFunc("GET /v1/openapi.yaml", app.showOpenapiHandler)
+
 	return app.metrics(app.recoverPanic(app.enableCORS(app.rateLimit(app.authenticate(router)))))
 }
